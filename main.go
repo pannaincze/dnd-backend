@@ -1,12 +1,12 @@
 package main
 
 import (
-	"dnd-backend/handlers"
 	"log"
 	"os"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
+	"github.com/gin-contrib/cors"
 
 	"github.com/pannaincze/dnd-backend/db"
 	"github.com/pannaincze/dnd-backend/handlers"
@@ -27,6 +27,13 @@ func main() {
     defer db.DB.Close() 
 
     router := gin.Default()
+
+		router.Use(cors.New(cors.Config{
+			AllowOrigins:     []string{"http://localhost:4200"},
+			AllowMethods:     []string{"GET", "POST", "PUT", "DELETE"},
+			AllowHeaders:     []string{"Origin", "Content-Type", "Accept"},
+			AllowCredentials: true,
+	}))
 
     router.POST("/characters", handlers.CreateCharacter) 
     router.GET("/characters", handlers.ListCharacters) 
